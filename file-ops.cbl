@@ -64,6 +64,8 @@ IDENTIFICATION DIVISION.
                    AT END
                        MOVE 1 TO WS-EOF-FLAG
                    NOT AT END
+*> Calculate actual line length by trimming trailing whitespace
+*> Start from end and work backwards to find last non-space character
                        MOVE 0 TO WS-LINE-LEN
                        PERFORM VARYING WS-LINE-LEN FROM 1024 BY -1
                            UNTIL WS-LINE-LEN < 1
@@ -73,30 +75,36 @@ IDENTIFICATION DIVISION.
                                EXIT PERFORM
                            END-IF
                        END-PERFORM
+*> Check if line fits in output buffer (prevent overflow)
                        IF WS-BUFFER-POS + WS-LINE-LEN + 1 <= 65536
+*> Copy line content to output buffer if not empty
                            IF WS-LINE-LEN > 0
-                               MOVE FILE-RECORD(1:WS-LINE-LEN) TO 
+                               MOVE FILE-RECORD(1:WS-LINE-LEN) TO
                                    LS-FILE-BUFFER(WS-BUFFER-POS:WS-LINE-LEN)
                                ADD WS-LINE-LEN TO WS-BUFFER-POS
                            END-IF
-                           MOVE X"0A" TO 
+*> Add line terminator (LF character) after each line
+                           MOVE X"0A" TO
                                LS-FILE-BUFFER(WS-BUFFER-POS:1)
                            ADD 1 TO WS-BUFFER-POS
                        ELSE
+*> Stop reading if buffer would overflow
       *>                   DISPLAY "FILE-OPS: Buffer full"
                            MOVE 1 TO WS-EOF-FLAG
                        END-IF
                END-READ
            END-PERFORM
            
+*> Calculate final file size (subtract 1 for final LF)
            IF WS-BUFFER-POS > 1
                COMPUTE LS-FILE-SIZE = WS-BUFFER-POS - 1
            ELSE
                MOVE 0 TO LS-FILE-SIZE
            END-IF
-           
+
       *>   DISPLAY "FILE-OPS: Total bytes read=" LS-FILE-SIZE
-           
+
+*> Close file to free system resources
            CLOSE DISK-FILE
            
            GOBACK.
