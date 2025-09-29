@@ -48,6 +48,12 @@ IDENTIFICATION DIVISION.
            
       *>   DISPLAY "PATH-UTILS: Output path='" LS-OUTPUT-PATH(1:50) "'"
            
+           IF LS-OUTPUT-PATH(1:1) = "/"
+      *>       DISPLAY "PATH-UTILS: Absolute path detected"
+               MOVE 1 TO LS-RETURN-CODE
+               GOBACK
+           END-IF
+           
            PERFORM VARYING WS-INDEX FROM 1 BY 1 
                UNTIL WS-INDEX > 510
                MOVE LS-OUTPUT-PATH(WS-INDEX:1) TO WS-CHAR
