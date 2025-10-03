@@ -113,10 +113,16 @@ IDENTIFICATION DIVISION.
 *> Attempt to read the requested file
            CALL "FILE-OPS" USING SANITIZED-PATH FILE-BUFFER
                                  FILE-SIZE WS-RETURN-CODE
-           
+
       *>   DISPLAY "File read result: " WS-RETURN-CODE
       *>   DISPLAY "File size: " FILE-SIZE
-           
+
+*> If file is too large, return 413 Payload Too Large
+           IF WS-RETURN-CODE = 2
+               PERFORM BUILD-413-RESPONSE
+               GOBACK
+           END-IF
+
 *> If file read failed, return 404 Not Found
            IF WS-RETURN-CODE NOT = 0
       *>       DISPLAY "File not found: '" SANITIZED-PATH "'"
@@ -202,6 +208,26 @@ IDENTIFICATION DIVISION.
                   WS-CRLF DELIMITED BY SIZE
                   WS-CRLF DELIMITED BY SIZE
                   "<html><body><h1>403 Forbidden</h1></body></html>"
+                      DELIMITED BY SIZE
+                  INTO LS-RESPONSE-BUF
+           END-STRING
+
+*> Calculate total response length for sending
+           INSPECT LS-RESPONSE-BUF TALLYING LS-RESPONSE-LEN
+               FOR CHARACTERS BEFORE INITIAL LOW-VALUE
+           .
+
+*> Build HTTP 413 Payload Too Large response (for oversized files)
+       BUILD-413-RESPONSE.
+*> Create complete HTTP response for files exceeding buffer size
+           STRING "HTTP/1.1 413 Payload Too Large" DELIMITED BY SIZE
+                  WS-CRLF DELIMITED BY SIZE
+                  "Content-Type: text/html" DELIMITED BY SIZE
+                  WS-CRLF DELIMITED BY SIZE
+                  "Content-Length: 59" DELIMITED BY SIZE
+                  WS-CRLF DELIMITED BY SIZE
+                  WS-CRLF DELIMITED BY SIZE
+                  "<html><body><h1>413 Payload Too Large</h1></body></html>"
                       DELIMITED BY SIZE
                   INTO LS-RESPONSE-BUF
            END-STRING

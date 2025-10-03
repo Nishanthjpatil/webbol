@@ -19,6 +19,7 @@ IDENTIFICATION DIVISION.
        01 WS-BUFFER-POS        PIC 9(8) COMP-5.
        01 WS-LINE-LEN          PIC 9(4) COMP-5.
        01 WS-EOF-FLAG          PIC 9 VALUE 0.
+       01 WS-OVERFLOW-FLAG     PIC 9 VALUE 0.
        
        LINKAGE SECTION.
        01 LS-FILE-PATH         PIC X(512).
@@ -27,6 +28,7 @@ IDENTIFICATION DIVISION.
        01 LS-RETURN-CODE       PIC 9.
           88 FILE-READ-OK      VALUE 0.
           88 FILE-READ-ERROR   VALUE 1.
+          88 FILE-TOO-LARGE    VALUE 2.
        
        PROCEDURE DIVISION USING LS-FILE-PATH LS-FILE-BUFFER 
                                 LS-FILE-SIZE LS-RETURN-CODE.
@@ -36,6 +38,7 @@ IDENTIFICATION DIVISION.
            MOVE 0 TO LS-FILE-SIZE
            MOVE 0 TO LS-RETURN-CODE
            MOVE 1 TO WS-BUFFER-POS
+           MOVE 0 TO WS-OVERFLOW-FLAG
            
            MOVE SPACES TO WS-FILE-NAME
 *> Find actual length of file path including embedded spaces
@@ -98,9 +101,10 @@ IDENTIFICATION DIVISION.
                                LS-FILE-BUFFER(WS-BUFFER-POS:1)
                            ADD 1 TO WS-BUFFER-POS
                        ELSE
-*> Stop reading if buffer would overflow
+*> Stop reading if buffer would overflow - mark as error
       *>                   DISPLAY "FILE-OPS: Buffer full"
                            MOVE 1 TO WS-EOF-FLAG
+                           MOVE 1 TO WS-OVERFLOW-FLAG
                        END-IF
                END-READ
            END-PERFORM
@@ -116,5 +120,10 @@ IDENTIFICATION DIVISION.
 
 *> Close file to free system resources
            CLOSE DISK-FILE
-           
+
+*> Return error if file was too large for buffer
+           IF WS-OVERFLOW-FLAG = 1
+               MOVE 2 TO LS-RETURN-CODE
+           END-IF
+
            GOBACK.
