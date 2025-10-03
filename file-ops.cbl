@@ -38,8 +38,18 @@ IDENTIFICATION DIVISION.
            MOVE 1 TO WS-BUFFER-POS
            
            MOVE SPACES TO WS-FILE-NAME
-           INSPECT LS-FILE-PATH TALLYING WS-LINE-LEN
-               FOR CHARACTERS BEFORE INITIAL SPACE
+*> Find actual length of file path including embedded spaces
+*> Scan backwards from end to find last non-space, non-null character
+*> This allows filenames with spaces (e.g. "test file.html")
+           MOVE 0 TO WS-LINE-LEN
+           PERFORM VARYING WS-LINE-LEN FROM 512 BY -1
+               UNTIL WS-LINE-LEN < 1
+               IF LS-FILE-PATH(WS-LINE-LEN:1) NOT = SPACE AND
+                  LS-FILE-PATH(WS-LINE-LEN:1) NOT = LOW-VALUE
+                   EXIT PERFORM
+               END-IF
+           END-PERFORM
+*> Copy the trimmed path to file name variable
            IF WS-LINE-LEN > 0
                MOVE LS-FILE-PATH(1:WS-LINE-LEN) TO WS-FILE-NAME
            ELSE

@@ -21,6 +21,8 @@ IDENTIFICATION DIVISION.
        01 WS-SIZE-STR          PIC X(10).
 *> HTTP line terminator sequence (carriage return + line feed)
        01 WS-CRLF              PIC XX VALUE X"0D0A".
+*> Decoded path after URL decoding (converts %20 to space, etc.)
+       01 WS-DECODED-PATH      PIC X(512).
        
 *> Parameters passed from calling program
        LINKAGE SECTION.
@@ -90,11 +92,15 @@ IDENTIFICATION DIVISION.
       *>       DISPLAY "Extracted path: '" REQUEST-PATH(1:50) "'"
            END-IF
 
+*> Decode URL-encoded characters (e.g., %20 -> space)
+           CALL "URL-DECODE" USING REQUEST-PATH WS-DECODED-PATH
+
 *> Validate and sanitize the requested path for security
-           CALL "PATH-UTILS" USING REQUEST-PATH SANITIZED-PATH
+           CALL "PATH-UTILS" USING WS-DECODED-PATH SANITIZED-PATH
                                    WS-RETURN-CODE
-           
+
       *>   DISPLAY "Requested path: '" REQUEST-PATH "'"
+      *>   DISPLAY "Decoded path: '" WS-DECODED-PATH "'"
       *>   DISPLAY "Sanitized path: '" SANITIZED-PATH "'"
       *>   DISPLAY "Path validation result: " WS-RETURN-CODE
            

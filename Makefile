@@ -12,7 +12,7 @@ COPYPATH = -I.
 TARGET = webserver
 
 # Module object files
-MODULES = path-utils.o mime-types.o file-ops.o http-handler.o
+MODULES = path-utils.o mime-types.o file-ops.o http-handler.o url-decode.o
 
 # Default target
 all: $(TARGET)
@@ -29,6 +29,9 @@ file-ops.o: file-ops.cbl
 
 http-handler.o: http-handler.cbl http-structs.cpy file-structs.cpy
 	$(CC) $(CFLAGS_OBJ) $(COPYPATH) http-handler.cbl
+
+url-decode.o: url-decode.cbl
+	$(CC) $(CFLAGS_OBJ) $(COPYPATH) url-decode.cbl
 
 # Compile main program and link with modules
 $(TARGET): webserver.cbl $(MODULES) config.cpy socket-defs.cpy http-structs.cpy
