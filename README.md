@@ -6,7 +6,7 @@ A minimal static web server written in COBOL using GnuCOBOL.
 
 - Serves static files from the current directory
 - Automatic MIME type detection for common file types
-- HTTP status codes: 200 (OK), 403 (Forbidden), 404 (Not Found)
+- HTTP status codes: 200 (OK), 403 (Forbidden), 404 (Not Found), 413 (Payload Too Large)
 - Path traversal attack prevention
 - Clean request logging with full HTTP headers
 - Defaults to `index.html` for root path requests
